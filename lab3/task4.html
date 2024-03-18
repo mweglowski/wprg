@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .container {
+        background-color: rgb(226, 225, 225);
+        font-size: 19px;
+    }
+    .parent {
+        color: red;
+        font-size: 17px;
+    }
+    .red-font {
+        color: red;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <p>Tekst w elemencie potomnym</p>
+        <p>Tekst w elemencie potomnym</p>
+        <div class="parent">
+            <p class="red-font">Tekst w elemencie wnuku</p>
+        </div>
+        <p class="red-font">Tekst w elemencie potomnym</p>
+    </div>
+</body>
+
+</html>
