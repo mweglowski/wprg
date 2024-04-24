@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito&family=Jersey+25&family=Tilt+Neon&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "Gabarito", "sans-serif";
+}
+
+.calculator {
+    width: 20rem;
+    padding: 1em;
+    border-radius: 5px;
+    border: 2px solid rgb(220, 220, 220);
+}
+
+hr {
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 20px;
+}
+
+.heading {
+    font-size: 2em;
+}
+
+.subheading {
+    font-size: 1.6rem;
+}
+
+.heading, .subheading {
+    color: rgb(90, 90, 90);
+    margin: .2em 0;
+}
+
+.simple-calculator-inputs-container input, button, select {
+    padding: .2em .5em;
+    margin: .3em 0;
+    font-size: 1.1rem;
+    color: rgb(150, 150, 150);
+    border-radius: 5px;
+    border: 2px solid rgb(220, 220, 220);
+    background-color: transparent;
+    transition: .3s;
+}
+
+button {
+    padding: .2em .5em;
+    font-size: 1.1rem;
+    color: rgb(150, 150, 150);
+    border-radius: 5px;
+    border: 2px solid rgb(220, 220, 220);
+    background-color: transparent;
+    transition: .3s;
+}
+button:hover {
+    background-color: rgb(220, 220, 220);
+    color: rgb(120, 120, 120);
+    cursor: pointer;
+}
+
+.calculator-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.simple-calculator-inputs-container {
+    display: flex;
+    margin: auto;
+}
+.simple-calculator-inputs-container input {
+    width: 3em;
+}
+
+select {
+    margin: 0.2em;
+}
