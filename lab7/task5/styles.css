@@ -38,7 +38,7 @@ hr {
     margin: .2em 0;
 }
 
-.simple-calculator-inputs-container input, button, select {
+.simple-calculator-inputs-container input, button, select, .advanced-calculator-input-container input {
     padding: .2em .5em;
     margin: .3em 0;
     font-size: 1.1rem;
@@ -50,6 +50,7 @@ hr {
 }
 
 button {
+    margin-left: 7rem;
     padding: .2em .5em;
     font-size: 1.1rem;
     color: rgb(150, 150, 150);
@@ -69,11 +70,12 @@ button:hover {
     flex-direction: column;
 }
 
-.simple-calculator-inputs-container {
+.simple-calculator-inputs-container, .advanced-calculator-input-container {
     display: flex;
     margin: auto;
+    justify-content: center;
 }
-.simple-calculator-inputs-container input {
+.simple-calculator-inputs-container input, .advanced-calculator-input-container input {
     width: 3em;
 }
 

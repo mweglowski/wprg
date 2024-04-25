@@ -14,24 +14,42 @@
         <hr />
 
         <div class="calculator-section">
-            <div class="subheading">Simple</div>
-            <div class="simple-calculator-inputs-container">
-                <input />
-                <select>
-                    <option>Addition</option>
-                    <option>Subtraction</option>
-                    <option>Multiplication</option>
-                    <option>Division</option>
-                </select>
-                <input />
-            </div>
-            <button>Calculate</button>
+            <form action="main.php" method="POST">
+                <div class="subheading">Simple</div>
+                <div class="simple-calculator-inputs-container">
+                    <input name="simple-number-1" type="number" step="0.1" required/>
+                    <select name="simple-operation">
+                        <option>Addition</option>
+                        <option>Subtraction</option>
+                        <option>Multiplication</option>
+                        <option>Division</option>
+                    </select>
+                    <input name="simple-number-2" type="number" step="0.1" required/>
+
+                </div>
+                <button type="submit" name="simple-calculator">Calculate</button>
+            </form>
         </div>
 
         <div class="calculator-section">
-            <div class="subheading">Advanced</div>
+            <form action="main.php" method="POST">
+                <div class="subheading">Advanced</div>
 
-            <button>Calculate</button>
+                <div class="advanced-calculator-input-container">
+                    <input name="advanced-number" type="text" required/>
+                    <select name="advanced-operation">
+                        <option value="cos">cos</option>
+                        <option value="sin">sin</option>
+                        <option value="tg">tg</option>
+                        <option value="bin to dec">bin to dec</option>
+                        <option value="dec to bin">dec to bin</option>
+                        <option value="dec to hex">dec to hex</option>
+                        <option value="hex to dec">hex to dec</option>
+                    </select>
+                </div>
+
+                <button type="submit" name="advanced-calculator">Calculate</button>
+            </form>
         </div>
     </div>
 </body>
