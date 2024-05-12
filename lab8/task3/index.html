@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<form action="main.php" method="post">
+    <label for="string">String:</label>
+    <input type="text" id="string" name="string" />
+    <br><br>
+
+    <label for="operation">Operation</label>
+    <select id="operation" name="operation">
+        <option value="reverse">Reverse</option>
+        <option value="uppercase">Uppercase</option>
+        <option value="lowercase">Lowercase</option>
+        <option value="length">Length</option>
+        <option value="remove-whitespaces">Remove whitespaces (start & end)</option>
+    </select>
+
+    <br><br>
+    <input type="submit" value="Submit" name="submit">
+</form>
+
+</body>
+</html>
