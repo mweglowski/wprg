@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<form action="main.php" method="get">
+    <label for="path">Path:</label>
+    <input id="path" name="path" type="text" required/>
+    <br>
+
+    <label for="dir">Directory:</label>
+    <input id="dir" name="dir" type="text"/>
+    <br>
+
+    <label for="operation">Operation:</label>
+    <select id="operation" name="operation">
+        <option value="read">Read</option>
+        <option value="delete">Delete</option>
+        <option value="create">Create</option>
+    </select>
+
+    <br><br>
+    <input type="submit" value="Submit" name="submit">
+</form>
+
+</body>
+</html>
