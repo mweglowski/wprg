@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito&family=Jersey+25&family=Tilt+Neon&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Gabarito";
+}
+
+body {
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    display: flex;
+    padding-top: 50px;
+    gap: 20px;
+}
+
+button {
+    padding: 0.4em;
+    font-size: 1.1em;
+    border: 2px solid black;
+    background: transparent;
+    border-radius: 5px;
+    transition: 300ms;
+    cursor: pointer;
+    width: 100%;
+}
+button:hover {
+    color: white;
+    background-color: black;
+}
+
+form {
+    padding: 10px;
+    text-align: left;
+    margin: auto;
+}
