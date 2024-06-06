@@ -120,11 +120,41 @@ try {
         }
     }
 
-    // FETCH PERSONS
-    $persons = $pdo->query("SELECT * FROM Person")->fetchAll(PDO::FETCH_ASSOC);
+    // FETCH PERSONS WITH SORTING AND FILTERING
+    $orderBy = isset($_POST['sort_field']) ? $_POST['sort_field'] : 'id';
+    $sortOrder = isset($_POST['sort_order']) ? $_POST['sort_order'] : 'ASC';
+    $filterField = isset($_POST['filter_field']) ? $_POST['filter_field'] : '';
+    $filterValue = isset($_POST['filter_value']) ? $_POST['filter_value'] : '';
 
-    // FETCH CARS
-    $cars = $pdo->query("SELECT * FROM Cars")->fetchAll(PDO::FETCH_ASSOC);
+    $personQuery = "SELECT * FROM Person";
+    if ($filterField && $filterValue) {
+        $personQuery .= " WHERE $filterField LIKE :filter_value";
+    }
+    $personQuery .= " ORDER BY $orderBy $sortOrder";
+    $stmt = $pdo->prepare($personQuery);
+    if ($filterField && $filterValue) {
+        $stmt->bindValue(':filter_value', '%' . $filterValue . '%');
+    }
+    $stmt->execute();
+    $persons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // FETCH CARS WITH SORTING AND FILTERING
+    $carOrderBy = isset($_POST['car_sort_field']) ? $_POST['car_sort_field'] : 'id';
+    $carSortOrder = isset($_POST['car_sort_order']) ? $_POST['car_sort_order'] : 'ASC';
+    $carFilterField = isset($_POST['car_filter_field']) ? $_POST['car_filter_field'] : '';
+    $carFilterValue = isset($_POST['car_filter_value']) ? $_POST['car_filter_value'] : '';
+
+    $carQuery = "SELECT * FROM Cars";
+    if ($carFilterField && $carFilterValue) {
+        $carQuery .= " WHERE $carFilterField LIKE :car_filter_value";
+    }
+    $carQuery .= " ORDER BY $carOrderBy $carSortOrder";
+    $stmt = $pdo->prepare($carQuery);
+    if ($carFilterField && $carFilterValue) {
+        $stmt->bindValue(':car_filter_value', '%' . $carFilterValue . '%');
+    }
+    $stmt->execute();
+    $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
@@ -160,8 +190,57 @@ try {
     <button type="submit" name="action" value="add_car">Add Car</button>
 </form>
 
-<!-- PERSONS TABLE PREVIEW -->
 <h2>Persons</h2>
+<!-- PERSONS SORTING AND FILTERING -->
+<div class="sorting-container">
+    <form action="index.php" method="post">
+        <h3>Sorting</h3>
+        <div>
+            <h4>Field</h4>
+            <select name="sort_field">
+                <option value="id">ID</option>
+                <option value="firstName">First Name</option>
+                <option value="lastName">Last Name</option>
+                <option value="email">Email</option>
+            </select>
+        </div>
+        <div>
+            <h4>Order</h4>
+            <div class="radio-inputs">
+                <label>
+                    <input type="radio" name="sort_order" value="ASC" class="radio-input" checked>
+                    Ascending
+                </label>
+                <label>
+                    <input type="radio" name="sort_order" value="DESC" class="radio-input">
+                    Descending
+                </label>
+            </div>
+        </div>
+        <div>
+            <button type="submit">Sort</button>
+        </div>
+    </form>
+
+    <form action="index.php" method="post">
+        <h3>Filtering</h3>
+        <div>
+            <h4>Field</h4>
+            <select name="filter_field">
+                <option value="id">ID</option>
+                <option value="firstName">First Name</option>
+                <option value="lastName">Last Name</option>
+                <option value="email">Email</option>
+            </select>
+        </div>
+        <input type="text" placeholder="Value" name="filter_value"/>
+        <div>
+            <button type="submit">Filter</button>
+        </div>
+    </form>
+</div>
+
+<!-- PERSONS TABLE PREVIEW -->
 <table class="card">
     <thead>
     <tr>
@@ -205,6 +284,56 @@ try {
 
 <!-- CARS TABLE PREVIEW -->
 <h2>Cars</h2>
+<div class="sorting-container">
+    <form action="index.php" method="post">
+        <h3>Sorting</h3>
+        <div>
+            <h4>Field</h4>
+            <select name="car_sort_field">
+                <option value="id">ID</option>
+                <option value="model">Model</option>
+                <option value="price">Price</option>
+                <option value="purchaseDate">Purchase Date</option>
+                <option value="personID">Person ID</option>
+            </select>
+        </div>
+        <div>
+            <h4>Order</h4>
+            <div class="radio-inputs">
+                <label>
+                    <input type="radio" name="car_sort_order" value="ASC" class="radio-input" checked>
+                    Ascending
+                </label>
+                <label>
+                    <input type="radio" name="car_sort_order" value="DESC" class="radio-input">
+                    Descending
+                </label>
+            </div>
+        </div>
+        <div>
+            <button type="submit">Sort</button>
+        </div>
+    </form>
+
+    <form action="index.php" method="post">
+        <h3>Filtering</h3>
+        <div>
+            <h4>Field</h4>
+            <select name="car_filter_field">
+                <option value="id">ID</option>
+                <option value="model">Model</option>
+                <option value="price">Price</option>
+                <option value="purchaseDate">Purchase Date</option>
+                <option value="personID">Person ID</option>
+            </select>
+        </div>
+        <input type="text" placeholder="Value" name="car_filter_value"/>
+        <div>
+            <button type="submit">Filter</button>
+        </div>
+    </form>
+</div>
+
 <table class="card">
     <thead>
     <tr>

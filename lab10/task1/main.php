@@ -14,7 +14,7 @@ setcookie('visitCount', $visitCount, time() + (86400 * 365), "/"); // 86400 = 1 
 if (isset($_POST['reset'])) {
     setcookie('visitCount', 0, time() + (86400 * 365), "/");
     $visitCount = 0;
-    header("Location: index.php");
+    header("Location: register.php");
     exit();
 }
 ?>

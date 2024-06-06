@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p>Result:</p>
     <p>$result</p>
     <br><br>
-    <a href='index.php'>Go Back</a>
+    <a href='register.php'>Go Back</a>
 </div>
 </body>
 </html>";

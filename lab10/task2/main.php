@@ -8,7 +8,7 @@ if (isset($_POST['submit']) && !$formSubmitted) {
 
     $favoriteLanguage = $_POST['language'];
 
-    header("Location: index.php");
+    header("Location: register.php");
     exit();
 }
 ?>
