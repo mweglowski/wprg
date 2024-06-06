@@ -6,13 +6,13 @@ $validPassword = "password";
 
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     session_destroy();
-    header("Location: main.php");
+    header("Location: index.php");
     exit();
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'back') {
     $error = "none";
-    header("Location: main.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
     if ($login == $validLogin && $password == $validPassword) {
         $_SESSION['userLoggedIn'] = true;
         $_SESSION['userLogin'] = $login;
-        header("Location: main.php");
+        header("Location: index.php");
         exit();
     } else {
         $error = "Wrong login or password";

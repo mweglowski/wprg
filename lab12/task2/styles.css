@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: "Poppins";
+}
+
+.card {
+    border-radius: 5px;
+    border: 2px solid lightgray;
+    box-shadow: 0 0 0.4em lightgray;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 100px;
+}
+
+button {
+    border-radius: 5px;
+    background-color: #7c5dd4;
+    border: 2px solid lightgray;
+    box-shadow: 0 0 0.4em lightgray;
+    color: white;
+    padding: 0.3em 1em;
+    font-size: 1em;
+    font-weight: bold;
+    margin: auto;
+}
+button:hover {
+    transition: 400ms;
+    cursor: pointer;
+    color: gray;
+    background: white;
+}
+
+input, select {
+    box-shadow: 0 0 0.4em lightgray;
+    padding: .3em;
+    border: 2px solid lightgray;
+    font-size: 1em;
+    border-radius: 5px;
+    background-color: #00000007;
+    color: gray;
+}
+input:hover, input:focus, select:hover, select:focus {
+    transition: 400ms;
+    box-shadow: 0 0 .4em #7c5dd4;
+    border-color: #7c5dd4;
+    outline: none;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    gap: 10px;
+    margin: auto;
+    width: 100%;
+}
+
+h2 {
+    margin-top: 50px;
+}
+
+table {
+    max-width: 800px;
+    margin: auto;
+    width: 100%;
+    padding: 10px;
+}

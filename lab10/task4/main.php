@@ -45,7 +45,7 @@ function isEmailUnique($email) {
 
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     session_destroy();
-    header("Location: main.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -59,13 +59,13 @@ if (isset($_POST['signup'])) {
 
     if (!passwordOk($password)) {
         $_SESSION['error'] = "Password should have at least 6 characters, include 1 upper case letter, at least 1 digit and at least 1 special character.";
-        header("Location: main.php?action=signup");
+        header("Location: index.php?action=signup");
         exit();
     }
 
     if (!isEmailUnique($email)) {
         $_SESSION['error'] = "Email is already registered.";
-        header("Location: main.php?action=signup");
+        header("Location: index.php?action=signup");
         exit();
     }
 
@@ -73,7 +73,7 @@ if (isset($_POST['signup'])) {
     file_put_contents($usersFile, $userData, FILE_APPEND);
 
     $_SESSION['message'] = "Registration successful. Please log in.";
-    header("Location: main.php?action=login");
+    header("Location: index.php?action=login");
     exit();
 }
 
@@ -83,7 +83,7 @@ if (isset($_POST['login'])) {
 
     if (!file_exists($usersFile)) {
         $_SESSION['error'] = "No users registered. Please sign up first.";
-        header("Location: main.php?action=signup");
+        header("Location: index.php?action=signup");
         exit();
     }
 
@@ -95,13 +95,13 @@ if (isset($_POST['login'])) {
         if ($storedEmail === $email && $storedPassword === $password) {
             $_SESSION['userLoggedIn'] = true;
             $_SESSION['userEmail'] = $storedEmail;
-            header("Location: main.php?action=loggedin");
+            header("Location: index.php?action=loggedin");
             exit();
         }
     }
 
     $_SESSION['error'] = "Wrong email or password.";
-    header("Location: main.php?action=login");
+    header("Location: index.php?action=login");
     exit();
 }
 
