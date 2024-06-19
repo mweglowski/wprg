@@ -1,0 +1,6 @@
+.logout-control-buttons-container {
+    display: flex;
+    gap: 40px;
+    margin: auto;
+    justify-content: center;
+}

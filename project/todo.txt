@@ -1,0 +1,15 @@
+NOW
+    account details show
+    reset / change password
+
+LATER
+    products - enable admin to create new product - products/new
+    products - filtering & sorting
+    orders - create orders section in /account route
+    create orders table
+    create product_categories table
+    create reviews table
+    enable user to add review to specific product
+    cart - show products and enable buying
+    home - logic with dropping tables when changing to home route (maybe firstly ./ and drop tables and redirect? or do not drop?)
+    design - place some icons & images (ex. undraw.co), folder structure - clean

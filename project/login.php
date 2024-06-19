@@ -1,45 +1,86 @@
 <?php
+session_start();
+
+$servername = "localhost"; // Change this to your database server name
+$username = "root";        // Change this to your database username
+$password = "";            // Change this to your database password
+$dbName = "project";       // Change this to the name of the database
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbName);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if (isset($_POST['login'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Prepare and bind
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        // Bind result variables
+        $stmt->bind_result($id, $hashedPassword);
+        $stmt->fetch();
+
+        // Verify password
+        if (password_verify($password, $hashedPassword)) {
+            // Password is correct, start a session
+            $_SESSION['user_id'] = $id;
+            $_SESSION['email'] = $email;
+
+            echo "Session after login: ";
+            print_r($_SESSION); // Debugging: Print session after login
+
+            header("Location: products.php");
+            exit();
+        } else {
+            $error = "Invalid email or password.";
+        }
+    } else {
+        $error = "Invalid email or password.";
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li>
-                <a href="home.php">
-                    Home
-                </a>
-            </li>
-            <li>
-                <a href="products.php">
-                    Products
-                </a>
-            </li>
-            <li>
-                <a href="login.php">
-                    Login
-                </a>
-            </li>
-        </ul>
-    </nav>
+<?php
+include "navbar.php";
+?>
 
-    <h2 style="text-align: center; margin: 50px;">LOGIN</h2>
+<h2 style="text-align: center; margin: 50px;">LOGIN</h2>
 
-    <form action="" method="post" class="login-form">
-        <input class="input"
-            type="text" placeholder="Email" />
-        <input class="input"s type="password" placeholder="Password" />
-        <button type="submit" class="button" style="margin: auto; margin-top: 20px;">Login</button>
-    </form>
+<form action="login.php" method="post" class="login-form">
+    <input class="input" type="text" name="email" placeholder="Email" required />
+    <input class="input" type="password" name="password" placeholder="Password" required />
+    <button type="submit" class="button" style="margin: auto; margin-top: 20px;" name="login">Login</button>
+</form>
 
-    <div class="login-register-paragraph">
-        Don't have an account? <a href="register.php" >Register</a>
-    </div>
+<?php
+if (isset($error)) {
+    echo "<p style='color: red; text-align: center;'>$error</p>";
+}
+?>
+
+<div class="login-register-paragraph">
+    Don't have an account? <a href="register.php">Register</a>
+</div>
 </body>
 </html>

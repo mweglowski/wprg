@@ -1,4 +1,51 @@
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "project";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $first_name = $_POST['firstName'];
+    $last_name = $_POST['lastName'];
+    $email = $_POST['email'];
+    $role = "user";
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
+
+    // Check if email already exists
+    $checkEmailSql = "SELECT email FROM users WHERE email = ?";
+    $checkStmt = $conn->prepare($checkEmailSql);
+    $checkStmt->bind_param("s", $email);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    if ($checkStmt->num_rows > 0) {
+        $error = "Email already exists. Please use a different email.";
+    } else {
+        // Insert new user into the database
+        $sql = "INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssss", $first_name, $last_name, $email, $password, $role);
+
+        if ($stmt->execute()) {
+            header("location: login.php");
+        } else {
+            $error = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+
+    $checkStmt->close();
+    $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,39 +56,28 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-<nav>
-    <ul>
-        <li>
-            <a href="home.php">
-                Home
-            </a>
-        </li>
-        <li>
-            <a href="products.php">
-                Products
-            </a>
-        </li>
-        <li>
-            <a href="login.php">
-                Login
-            </a>
-        </li>
-    </ul>
-</nav>
+<?php
+include "navbar.php";
+?>
 
 <h2 style="text-align: center; margin: 50px;">REGISTER</h2>
 
-<form action="" method="post" class="login-form">
-    <input class="input" type="text" placeholder="First Name" />
-    <input class="input" type="text" placeholder="Last Name" />
-    <input class="input"
-           type="text" placeholder="Email" />
-    <input class="input" type="password" placeholder="Password" />
+<form action="register.php" method="post" class="login-form">
+    <input class="input" type="text" name="firstName" placeholder="First Name" required />
+    <input class="input" type="text" name="lastName" placeholder="Last Name" required />
+    <input class="input" type="email" name="email" placeholder="Email" required />
+    <input class="input" type="password" name="password" placeholder="Password" required />
     <button type="submit" class="button" style="margin: auto; margin-top: 20px;">Register</button>
 </form>
 
+<?php
+if (isset($error)) {
+    echo "<p style='color: red; text-align: center;'>$error</p>";
+}
+?>
+
 <div class="login-register-paragraph">
-    Already have an account? <a href="login.php" >Login</a>
+    Already have an account? <a href="login.php">Login</a>
 </div>
 </body>
 </html>
