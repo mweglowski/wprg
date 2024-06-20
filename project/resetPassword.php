@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errorMessage = "Error updating password: " . $stmt->error;
         }
 
-        header('Location: login.php');
+        header('Location: account.php');
 
         $stmt->close();
     } else {

@@ -30,6 +30,30 @@ $stmt->execute();
 $stmt->bind_result($firstName, $lastName, $email, $role, $password, $createdAt);
 $stmt->fetch();
 $stmt->close();
+
+// Determine which section to show
+$section = isset($_GET['section']) ? $_GET['section'] : 'accountDetails';
+
+// Fetch user orders
+$orders = [];
+if ($section == 'orders') {
+    $sql = "SELECT orders.id, orders.created_at, products.title, products.authors, products.price, order_products.quantity 
+            FROM orders 
+            JOIN order_products ON orders.id = order_products.order_id 
+            JOIN products ON order_products.product_id = products.id 
+            WHERE orders.user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+
+    $stmt->close();
+}
+
 $conn->close();
 ?>
 
@@ -42,38 +66,56 @@ $conn->close();
     <link rel="stylesheet" href="account.css">
 </head>
 <body>
-<?php
-include "navbar.php";
-?>
+<?php include "navbar.php"; ?>
 
 <div class="section">
-
     <h2 style="text-align: center; margin: 50px;">Account</h2>
 
-    <div style="border-bottom: 2px solid black; display: flex; justify-content: center; gap: 10px;">
-        <button class="button">Account Details</button>
-        <button class="button">Orders</button>
+    <div style="border-bottom: 2px solid black; display: flex; justify-content: center; gap: 10px; max-width: 500px; margin: auto; width: 100%;">
+        <a href="?section=accountDetails" class="button" style="font-size: 0.85em; text-decoration: none;">Account Details</a>
+        <a href="?section=orders" class="button" style="font-size: 0.85em; text-decoration: none;">Orders</a>
     </div>
 
-    <div class="account-details">
-        <h3>Account Details</h3>
-
-        <div class="account-detail">
-            <strong>First Name:</strong> <p><?php echo htmlspecialchars($firstName); ?></p>
+    <?php if ($section == 'accountDetails') { ?>
+        <div id="accountDetails" class="account-details">
+            <h3>Account Details</h3>
+            <div class="account-detail">
+                <strong>First Name:</strong> <p><?php echo htmlspecialchars($firstName); ?></p>
+            </div>
+            <div class="account-detail">
+                <strong>Last Name:</strong> <p><?php echo htmlspecialchars($lastName); ?></p>
+            </div>
+            <div class="account-detail">
+                <strong>Email:</strong> <p><?php echo htmlspecialchars($email); ?></p>
+            </div>
+            <div class="account-detail">
+                <strong>Password:</strong> <p>xxxxxxxxxx</p>
+            </div>
+            <div class="account-detail">
+                <strong>Created At:</strong> <p><?php echo htmlspecialchars($createdAt); ?></p>
+            </div>
         </div>
-        <div class="account-detail">
-            <strong>Last Name:</strong> <p><?php echo htmlspecialchars($lastName); ?></p>
+    <?php } elseif ($section == 'orders') { ?>
+        <div id="orders">
+            <h3>Orders</h3>
+            <?php if (!empty($orders)) { ?>
+                <ul class="orders-list">
+                    <?php foreach ($orders as $order) { ?>
+                        <li>
+                            <strong>Order ID:</strong> <?php echo htmlspecialchars($order['id']); ?><br>
+                            <strong>Date:</strong> <?php echo htmlspecialchars($order['created_at']); ?><br>
+                            <strong>Product:</strong> <?php echo htmlspecialchars($order['title']); ?><br>
+                            <strong>Authors:</strong> <?php echo htmlspecialchars($order['authors']); ?><br>
+                            <strong>Price:</strong> $<?php echo htmlspecialchars($order['price']); ?><br>
+                            <strong>Quantity:</strong> <?php echo htmlspecialchars($order['quantity']); ?><br>
+                        </li>
+                    <?php } ?>
+                </ul>
+            <?php } else { ?>
+                <p>You have no orders.</p>
+            <?php } ?>
         </div>
-        <div class="account-detail">
-            <strong>Email:</strong> <p><?php echo htmlspecialchars($email); ?></p>
-        </div>
-        <div class="account-detail">
-            <strong>Password:</strong> <p>xxxxxxxxxx</p>
-        </div>
-        <div class="account-detail">
-            <strong>Created At:</strong> <p><?php echo htmlspecialchars($createdAt); ?></p>
-        </div>
-    </div>
+    <?php } ?>
 
     <a href="resetPassword.php" class="button" style="font-size: 0.85em; text-decoration: none; margin: 3em auto;">Reset Password</a>
 </div>

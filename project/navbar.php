@@ -2,7 +2,7 @@
 session_start();
 ?>
 
-<nav>
+<nav class="navbar">
     <ul>
         <li>
             <a href="home.php">

@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost"; // Change this to your database server name
-$username = "root";        // Change this to your database username
-$password = "";            // Change this to your database password
-$dbName = "project"; // Change this to the name of the new database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbName = "project";
 
 $conn = new mysqli($servername, $username, $password);
 
@@ -21,11 +21,11 @@ if ($conn->query($createDb) === TRUE) {
 
 $conn->select_db($dbName);
 
-// Drop users and products tables if they exist
-$dropUsersTable = "DROP TABLE IF EXISTS `users`";
-$dropProductsTable = "DROP TABLE IF EXISTS `products`";
-$conn->query($dropUsersTable);
-$conn->query($dropProductsTable);
+// Drop existing tables if they exist
+$tables = ['users', 'products', 'orders', 'order_products'];
+foreach ($tables as $table) {
+    $conn->query("DROP TABLE IF EXISTS `$table`");
+}
 
 // Create users table
 $createUsersTable = "CREATE TABLE IF NOT EXISTS `users` (
@@ -37,15 +37,9 @@ $createUsersTable = "CREATE TABLE IF NOT EXISTS `users` (
     `role` VARCHAR(50) NOT NULL,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
+$conn->query($createUsersTable);
 
-// Execute the table creation query for users
-if ($conn->query($createUsersTable) === TRUE) {
-    echo "Users table created successfully.<br>";
-} else {
-    echo "Error creating users table: " . $conn->error . "<br>";
-}
-
-// Create products table with author column
+// Create products table
 $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `image` VARCHAR(255) NOT NULL,
@@ -56,13 +50,52 @@ $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
     `quantity` INT NOT NULL,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
+$conn->query($createProductsTable);
 
-// Execute the table creation query for products
-if ($conn->query($createProductsTable) === TRUE) {
-    echo "Products table created successfully.<br>";
-} else {
-    echo "Error creating products table: " . $conn->error . "<br>";
+// Create orders table
+$createOrdersTable = "CREATE TABLE IF NOT EXISTS `orders` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+)";
+$conn->query($createOrdersTable);
+
+// Create order_products table
+$createOrderProductsTable = "CREATE TABLE IF NOT EXISTS `order_products` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `order_id` INT NOT NULL,
+    `product_id` INT NOT NULL,
+    `quantity` INT NOT NULL,
+    FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`),
+    FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
+)";
+$conn->query($createOrderProductsTable);
+
+// Insert initial users
+$insertUsers = [
+    [
+        'firstName' => 'Admin',
+        'lastName' => 'User',
+        'email' => 'admin@example.com',
+        'password' => password_hash('adminpass', PASSWORD_DEFAULT),
+        'role' => 'admin'
+    ],
+    [
+        'firstName' => 'John',
+        'lastName' => 'Doe',
+        'email' => 'john@example.com',
+        'password' => password_hash('password', PASSWORD_DEFAULT),
+        'role' => 'user'
+    ]
+];
+
+$insertUserStmt = $conn->prepare("INSERT INTO `users` (`firstName`, `lastName`, `email`, `password`, `role`) VALUES (?, ?, ?, ?, ?)");
+foreach ($insertUsers as $user) {
+    $insertUserStmt->bind_param("sssss", $user['firstName'], $user['lastName'], $user['email'], $user['password'], $user['role']);
+    $insertUserStmt->execute();
 }
+$insertUserStmt->close();
 
 // Insert initial products
 $products = [
@@ -143,7 +176,6 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,8 +184,6 @@ $conn->close();
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-<?php
-include "navbar.php";
-?>
+<?php include "navbar.php"; ?>
 </body>
 </html>

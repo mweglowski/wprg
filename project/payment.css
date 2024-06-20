@@ -1,0 +1,7 @@
+.payment-total-price {
+    max-width: 400px;
+    display: flex;
+    margin: auto;
+    justify-content: space-between;
+    font-weight: bold;
+}

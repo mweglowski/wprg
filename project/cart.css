@@ -1,3 +1,42 @@
+.cart-product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    margin: auto;
+    width: fit-content;
+}
+
+.cart-product-item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-product-item {
+    display: flex;
+    max-width: 500px;
+    witdh: 100%;
+    border-radius: 5px;
+    box-shadow: 0 0 .3em lightgray;
+    padding: 1em;
+    gap: 1em;
+}
+
 .cart-product-image {
     height: 120px;
+}
+
+.cart-product-item-title {
+    font-weight: bold;
+}
+.cart-product-item-authors {
+    font-size: 0.8em;
+    color: #444;
+}
+
+.cart-total-price {
+    max-width: 400px;
+    margin: 1em auto;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
 }

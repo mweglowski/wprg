@@ -7,7 +7,17 @@
     color: black;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 /* GLOBAL */
+.link {
+    font-size: 0.85em;
+    text-decoration: none;
+}
+
 .section {
     display: flex;
     flex-direction: column;
@@ -35,7 +45,6 @@
     padding: 0.7em;
     border-radius: 5px;
     border: none;
-    width: 100%;
 }
 .input:hover, .input:focus {
     color: black;
@@ -46,7 +55,10 @@
 nav {
     display: flex;
     justify-content: center;
-    border-bottom: 2px solid black;
+    position: fixed;
+    width: 100%;
+    background-color: #ffffffee;
+    box-shadow: 0 0 .4em lightgray;
 }
 nav ul {
     display: flex;
@@ -70,6 +82,7 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     max-width: 450px;
+    width: 100%;
     margin: auto;
     gap: .6em;
     justify-content: center;
