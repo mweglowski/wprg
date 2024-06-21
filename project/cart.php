@@ -84,7 +84,7 @@ if (!empty($productIds)) {
                     </div>
                     <form method="POST" action="" class="cart-product-remove-form">
                         <input type="hidden" name="remove_product_id" value="<?= $productId ?>">
-                        <button type="submit" class="button-remove">Remove</button>
+                        <button type="submit" class="button">Remove</button>
                     </form>
                 </li>
             <?php endwhile; ?>

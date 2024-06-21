@@ -37,7 +37,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : 'accountDetails';
 // Fetch user orders
 $orders = [];
 if ($section == 'orders') {
-    $sql = "SELECT orders.id, orders.created_at, products.title, products.authors, products.price, order_products.quantity 
+    $sql = "SELECT orders.id as order_id, orders.created_at, products.title, products.authors, products.price, order_products.quantity 
             FROM orders 
             JOIN order_products ON orders.id = order_products.order_id 
             JOIN products ON order_products.product_id = products.id 
@@ -48,7 +48,19 @@ if ($section == 'orders') {
     $result = $stmt->get_result();
 
     while ($row = $result->fetch_assoc()) {
-        $orders[] = $row;
+        $order_id = $row['order_id'];
+        if (!isset($orders[$order_id])) {
+            $orders[$order_id] = [
+                'created_at' => $row['created_at'],
+                'products' => []
+            ];
+        }
+        $orders[$order_id]['products'][] = [
+            'title' => $row['title'],
+            'authors' => $row['authors'],
+            'price' => $row['price'],
+            'quantity' => $row['quantity']
+        ];
     }
 
     $stmt->close();
@@ -77,7 +89,7 @@ $conn->close();
     </div>
 
     <?php if ($section == 'accountDetails') { ?>
-        <div id="accountDetails" class="account-details">
+        <div class="account-details">
             <h3>Account Details</h3>
             <div class="account-detail">
                 <strong>First Name:</strong> <p><?php echo htmlspecialchars($firstName); ?></p>
@@ -96,18 +108,25 @@ $conn->close();
             </div>
         </div>
     <?php } elseif ($section == 'orders') { ?>
-        <div id="orders">
+        <div class="orders">
             <h3>Orders</h3>
             <?php if (!empty($orders)) { ?>
                 <ul class="orders-list">
-                    <?php foreach ($orders as $order) { ?>
-                        <li>
-                            <strong>Order ID:</strong> <?php echo htmlspecialchars($order['id']); ?><br>
+                    <?php foreach ($orders as $order_id => $order) { ?>
+                        <li class="order-card">
+                            <strong>Order ID:</strong> <?php echo htmlspecialchars($order_id); ?><br>
                             <strong>Date:</strong> <?php echo htmlspecialchars($order['created_at']); ?><br>
-                            <strong>Product:</strong> <?php echo htmlspecialchars($order['title']); ?><br>
-                            <strong>Authors:</strong> <?php echo htmlspecialchars($order['authors']); ?><br>
-                            <strong>Price:</strong> $<?php echo htmlspecialchars($order['price']); ?><br>
-                            <strong>Quantity:</strong> <?php echo htmlspecialchars($order['quantity']); ?><br>
+                            <strong>Products:</strong>
+                            <ul class="order-products-list">
+                                <?php foreach ($order['products'] as $product) { ?>
+                                    <li class="order-product-card">
+                                        <strong>Title:</strong> <?php echo htmlspecialchars($product['title']); ?><br>
+                                        <strong>Authors:</strong> <?php echo htmlspecialchars($product['authors']); ?><br>
+                                        <strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?><br>
+                                        <strong>Quantity:</strong> <?php echo htmlspecialchars($product['quantity']); ?><br>
+                                    </li>
+                                <?php } ?>
+                            </ul>
                         </li>
                     <?php } ?>
                 </ul>
@@ -117,7 +136,9 @@ $conn->close();
         </div>
     <?php } ?>
 
-    <a href="resetPassword.php" class="button" style="font-size: 0.85em; text-decoration: none; margin: 3em auto;">Reset Password</a>
+    <?php if ($section === 'accountDetails') { ?>
+        <a href="resetPassword.php" class="button" style="font-size: 0.85em; text-decoration: none; margin: 3em auto;">Reset Password</a>
+    <?php } ?>
 </div>
 
 </body>

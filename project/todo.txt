@@ -1,5 +1,4 @@
 NOW
-    orders - design orders section in /account route
     products - enable admin to create new product - products/new
 
 LATER

@@ -112,7 +112,7 @@ $conn->close();
 </div>
 
 <!-- PURCHASE BUTTON -->
-<form method="POST" action="payment.php">
+<form method="POST" action="payment.php" style="display: flex;">
     <button type="submit" name="purchase" class="button" style="margin: 5em auto;">Purchase</button>
 </form>
 

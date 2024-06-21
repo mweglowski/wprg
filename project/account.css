@@ -1,5 +1,5 @@
 .account-details {
-    max-width: 500px;
+    max-width: 700px;
     margin: 10px auto;
     width: 100%;
 }
@@ -7,4 +7,40 @@
 .account-detail {
     display: flex;
     justify-content: space-between;
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 800px;
+    width: 100%;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1em;
+    list-style: none;
+    margin-bottom: 4em;
+}
+
+.order-card {
+    box-shadow: 0 0 .4em lightgray;
+    border-radius: 5px;
+    padding: 1em;
+}
+.order-products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+.order-product-card {
+    box-shadow: 0 0 .4em lightgray;
+    border-radius: 5px;
+    padding: 1em;
+}
+
+li {
+    list-style: none;
 }
