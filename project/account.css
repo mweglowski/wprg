@@ -44,3 +44,16 @@
 li {
     list-style: none;
 }
+
+.account-button {
+    border-radius: 5px 5px 0 0;
+    border: 2px solid black;
+    border-bottom: none;
+    color: black;
+    transition: 400ms;
+    padding: 0.3em 1em;
+}
+.account-button:hover {
+    background-color: black;
+    color: white;
+}

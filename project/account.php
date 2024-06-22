@@ -6,15 +6,12 @@ $username = "root";
 $password = "";
 $dbname = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -22,7 +19,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch user details from the database
 $sql = "SELECT firstName, lastName, email, role, password, createdAt FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -31,10 +27,8 @@ $stmt->bind_result($firstName, $lastName, $email, $role, $password, $createdAt);
 $stmt->fetch();
 $stmt->close();
 
-// Determine which section to show
 $section = isset($_GET['section']) ? $_GET['section'] : 'accountDetails';
 
-// Fetch user orders
 $orders = [];
 if ($section == 'orders') {
     $sql = "SELECT orders.id as order_id, orders.created_at, products.title, products.authors, products.price, order_products.quantity 
@@ -81,11 +75,11 @@ $conn->close();
 <?php include "navbar.php"; ?>
 
 <div class="section">
-    <h2 style="text-align: center; margin: 50px;">Account</h2>
+    <img src="./images/sections/account.png" alt="Account Image" class="section-image"/>
 
     <div style="border-bottom: 2px solid black; display: flex; justify-content: center; gap: 10px; max-width: 500px; margin: auto; width: 100%;">
-        <a href="?section=accountDetails" class="button" style="font-size: 0.85em; text-decoration: none;">Account Details</a>
-        <a href="?section=orders" class="button" style="font-size: 0.85em; text-decoration: none;">Orders</a>
+        <a href="?section=accountDetails" class="account-button" style="font-size: 0.85em; text-decoration: none;">Account Details</a>
+        <a href="?section=orders" class="account-button" style="font-size: 0.85em; text-decoration: none;">Orders</a>
     </div>
 
     <?php if ($section == 'accountDetails') { ?>

@@ -1,15 +1,13 @@
 <?php
 session_start();
 
-$servername = "localhost"; // Change this to your database server name
-$username = "root";        // Change this to your database username
-$password = "";            // Change this to your database password
-$dbName = "project";       // Change this to the name of the database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbName = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbName);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -18,7 +16,6 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Prepare and bind
     $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -64,7 +61,7 @@ $conn->close();
 <?php
 include "navbar.php";
 ?>
-
+<img src="./images/sections/login.png" alt="Login Page Image" class="section-image"/>
 <h2 style="text-align: center; margin: 50px;">LOGIN</h2>
 
 <form action="login.php" method="post" class="login-form">

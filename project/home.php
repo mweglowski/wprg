@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -6,28 +8,19 @@ $dbName = "project";
 
 $conn = new mysqli($servername, $username, $password);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create database if it doesn't exist
 $createDb = "CREATE DATABASE IF NOT EXISTS `$dbName`";
-if ($conn->query($createDb) === TRUE) {
-    echo "Database created successfully.<br>";
-} else {
-    echo "Error creating database: " . $conn->error . "<br>";
-}
 
 $conn->select_db($dbName);
 
-// Drop existing tables if they exist
-$tables = ['users', 'products', 'orders', 'order_products'];
+$tables = ['order_products', 'orders', 'products', 'users'];
 foreach ($tables as $table) {
     $conn->query("DROP TABLE IF EXISTS `$table`");
 }
 
-// Create users table
 $createUsersTable = "CREATE TABLE IF NOT EXISTS `users` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `firstName` VARCHAR(50) NOT NULL,
@@ -39,7 +32,6 @@ $createUsersTable = "CREATE TABLE IF NOT EXISTS `users` (
 )";
 $conn->query($createUsersTable);
 
-// Create products table
 $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `image` VARCHAR(255) NOT NULL,
@@ -52,7 +44,6 @@ $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
 )";
 $conn->query($createProductsTable);
 
-// Create orders table
 $createOrdersTable = "CREATE TABLE IF NOT EXISTS `orders` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT NOT NULL,
@@ -61,7 +52,6 @@ $createOrdersTable = "CREATE TABLE IF NOT EXISTS `orders` (
 )";
 $conn->query($createOrdersTable);
 
-// Create order_products table
 $createOrderProductsTable = "CREATE TABLE IF NOT EXISTS `order_products` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `order_id` INT NOT NULL,
@@ -72,19 +62,18 @@ $createOrderProductsTable = "CREATE TABLE IF NOT EXISTS `order_products` (
 )";
 $conn->query($createOrderProductsTable);
 
-// Insert initial users
 $insertUsers = [
     [
         'firstName' => 'Admin',
         'lastName' => 'User',
         'email' => 'admin@example.com',
-        'password' => password_hash('adminpass', PASSWORD_DEFAULT),
+        'password' => password_hash('adminpassword', PASSWORD_DEFAULT),
         'role' => 'admin'
     ],
     [
-        'firstName' => 'John',
-        'lastName' => 'Doe',
-        'email' => 'john@example.com',
+        'firstName' => 'Marcin',
+        'lastName' => 'Weglowski',
+        'email' => 'marcin@example.com',
         'password' => password_hash('password', PASSWORD_DEFAULT),
         'role' => 'user'
     ]
@@ -97,7 +86,6 @@ foreach ($insertUsers as $user) {
 }
 $insertUserStmt->close();
 
-// Insert initial products
 $products = [
     [
         'image' => './images/rl_sutton.jpg',
@@ -148,31 +136,11 @@ foreach ($products as $product) {
 }
 $insertProductStmt->close();
 
-// Show tables
 $showTables = "SHOW TABLES";
 $result = $conn->query($showTables);
 
-if ($result->num_rows > 0) {
-    echo "Tables in database '$dbName':<br>";
-    while($row = $result->fetch_assoc()) {
-        echo $row[array_keys($row)[0]] . "<br>";
-    }
-} else {
-    echo "No tables found in database.<br>";
-}
-
-// Fetch and display users
 $fetchUsers = "SELECT * FROM `users`";
 $result = $conn->query($fetchUsers);
-
-if ($result->num_rows > 0) {
-    echo "Users:<br>";
-    while($row = $result->fetch_assoc()) {
-        echo "ID: " . $row["id"] . " - Name: " . $row["firstName"] . " " . $row["lastName"] . " - Email: " . $row["email"] . " - Role: " . $row["role"] . " - Created At: " . $row["createdAt"] . "<br>";
-    }
-} else {
-    echo "No users found.<br>";
-}
 
 $conn->close();
 ?>
@@ -185,5 +153,10 @@ $conn->close();
 </head>
 <body>
 <?php include "navbar.php"; ?>
+
+<img src="./images/sections/home.png" alt="Home Page Image" class="section-image"/>
+
+<h2 style="text-align: center; margin: 50px;">Welcome to our shop!</h2>
+
 </body>
 </html>

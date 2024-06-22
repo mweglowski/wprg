@@ -1,26 +1,21 @@
 <?php
 session_start();
 
-// Database connection settings
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Initialize the cart if it doesn't exist
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Handle remove from cart action
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_product_id'])) {
     $productIdToRemove = $_POST['remove_product_id'];
     if (isset($_SESSION['cart'][$productIdToRemove])) {
@@ -32,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_product_id']))
     }
 }
 
-// Fetch products in the cart
 $cartItems = $_SESSION['cart'];
 $productIds = array_keys($cartItems);
 $totalPrice = 0;
@@ -66,7 +60,7 @@ if (!empty($productIds)) {
 <body>
 <?php include "navbar.php"; ?>
 
-<h2 style="text-align: center; margin: 50px;">Cart</h2>
+<img src="./images/sections/cart.png" alt="Cart Page Image" class="section-image"/>
 
 <div>
     <ul class="cart-product-list">

@@ -1,13 +1,13 @@
 <?php
+session_start();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -17,9 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $last_name = $_POST['lastName'];
     $email = $_POST['email'];
     $role = "user";
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Check if email already exists
     $checkEmailSql = "SELECT email FROM users WHERE email = ?";
     $checkStmt = $conn->prepare($checkEmailSql);
     $checkStmt->bind_param("s", $email);
@@ -29,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkStmt->num_rows > 0) {
         $error = "Email already exists. Please use a different email.";
     } else {
-        // Insert new user into the database
         $sql = "INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sssss", $first_name, $last_name, $email, $password, $role);
@@ -59,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php
 include "navbar.php";
 ?>
-
+<img src="./images/sections/login.png" alt="Register Page Image" class="section-image"/>
 <h2 style="text-align: center; margin: 50px;">REGISTER</h2>
 
 <form action="register.php" method="post" class="login-form">

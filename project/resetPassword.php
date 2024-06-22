@@ -6,15 +6,12 @@ $username = "root";
 $password = "";
 $dbname = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -27,10 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $confirmPassword = $_POST['confirm_password'];
 
     if ($newPassword === $confirmPassword) {
-        // Hash the new password
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-        // Update the password in the database
         $updateSql = "UPDATE users SET password = ? WHERE id = ?";
         $stmt = $conn->prepare($updateSql);
         $stmt->bind_param("si", $hashedPassword, $user_id);
@@ -64,23 +59,23 @@ $conn->close();
 include "navbar.php";
 ?>
 
-<h2 style="text-align: center; margin: 50px;">Reset Password</h2>
+<div class="section">
 
-<form action="resetPassword.php" method="post" class="login-form">
-    <div>
+    <h2 style="text-align: center; margin: 50px;">Reset Password</h2>
+
+    <form action="resetPassword.php" method="post" class="login-form">
         <input class="input" placeholder="New Password" type="password" name="new_password" required>
-    </div>
-    <div>
         <input class="input" placeholder="Confirm Password" type="password" name="confirm_password" required>
-    </div>
-    <button type="submit" class="button" style="margin: auto;">Reset Password</button>
-</form>
 
-<?php
-if (isset($errorMessage)) {
-    echo "<p style='color: red; text-align: center;'>$errorMessage</p>";
-}
-?>
+        <button type="submit" class="button" style="margin: 1em auto;">Reset Password</button>
+    </form>
+
+    <?php
+    if (isset($errorMessage)) {
+        echo "<p style='color: red; text-align: center;'>$errorMessage</p>";
+    }
+    ?>
+</div>
 
 </body>
 </html>

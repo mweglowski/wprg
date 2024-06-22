@@ -1,0 +1,24 @@
+nav {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    background-color: #ffffffee;
+    box-shadow: 0 0 .4em lightgray;
+}
+nav ul {
+    display: flex;
+    gap: 2em;
+    padding: 1em;
+    list-style: none;
+}
+nav a {
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    text-decoration: none;
+}
+nav a:hover {
+    background-color: black;
+    color: white;
+    transition: 400ms;
+}

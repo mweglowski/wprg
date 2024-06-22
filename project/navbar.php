@@ -2,6 +2,10 @@
 session_start();
 ?>
 
+<head>
+    <link rel="stylesheet" href="navbar.css">
+</head>
+
 <nav class="navbar">
     <ul>
         <li>

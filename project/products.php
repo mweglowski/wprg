@@ -1,25 +1,33 @@
 <?php
 session_start();
 
-$servername = "localhost"; // Change this to your database server name
-$username = "root";        // Change this to your database username
-$password = "";            // Change this to your database password
-$dbname = "project";       // Change this to your database name
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Initialize the cart if it doesn't exist
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+}
+
+$sql = "SELECT role FROM users WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($role);
+$stmt->fetch();
+$stmt->close();
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Handle add to cart action
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     $productId = $_POST['product_id'];
     if (isset($_SESSION['cart'][$productId])) {
@@ -29,8 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     }
 }
 
-// Fetch products from the database
-$sql = "SELECT id, title, authors, description, price, image FROM products";
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$searchSql = '';
+if ($searchTerm) {
+    $searchSql = "WHERE title LIKE '%$searchTerm%' OR authors LIKE '%$searchTerm%' OR description LIKE '%$searchTerm%'";
+}
+$sql = "SELECT id, title, authors, description, price, image FROM products $searchSql";
 $result = $conn->query($sql);
 ?>
 
@@ -40,20 +52,30 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <title>Products</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="products.css">
 </head>
 <body>
-<?php
-include "navbar.php";
-?>
+<?php include "navbar.php"; ?>
 
-<h2 style="text-align: center; margin: 50px;">PRODUCTS</h2>
+<img src="./images/sections/products.png" alt="Products Page Image" class="section-image"/>
 
-<!-- PRODUCTS LIST -->
+<?php if ($role === 'admin') { ?>
+    <div style="text-align: center; margin: 20px;">
+        <a href="newProduct.php" class="link button">Create New Product</a>
+    </div>
+<?php } ?>
+
+<div style="text-align: center; margin: 20px;">
+    <form method="GET" action="">
+        <input type="text" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>" placeholder="Search content" class="input">
+        <button type="submit" class="button">Search</button>
+    </form>
+</div>
+
 <div>
     <ul class="product-card-list">
         <?php
         if ($result->num_rows > 0) {
-            // Output data of each row
             while($row = $result->fetch_assoc()) {
                 echo '<li class="product-card">';
                 echo '<img class="product-card-image" src="' . $row["image"] . '" alt="Product Image" />';

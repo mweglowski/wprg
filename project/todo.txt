@@ -1,11 +1,3 @@
-NOW
-    products - enable admin to create new product - products/new
+design - place some icons & images (ex. undraw.co), folder structure - clean
 
-LATER
-    products - filtering & sorting
-    create product_categories table
-    create reviews table
-    enable user to add review to specific product
-    home - logic with dropping tables when changing to home route (maybe firstly ./ and drop tables and redirect? or do not drop?)
-    design - place some icons & images (ex. undraw.co), folder structure - clean
-    turn off warnings
+turn off warnings
