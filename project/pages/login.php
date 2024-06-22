@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 
 $servername = "localhost";
@@ -55,13 +58,13 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
 <?php
 include "navbar.php";
 ?>
-<img src="./images/sections/login.png" alt="Login Page Image" class="section-image"/>
+<img src="../images/sections/login.png" alt="Login Page Image" class="section-image"/>
 <h2 style="text-align: center; margin: 50px;">LOGIN</h2>
 
 <form action="login.php" method="post" class="login-form">

@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 
 $servername = "localhost";
@@ -51,13 +54,13 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/products.css">
 </head>
 <body>
 <?php include "navbar.php"; ?>
 
-<img src="./images/sections/products.png" alt="Products Page Image" class="section-image"/>
+<img src="../images/sections/products.png" alt="Products Page Image" class="section-image"/>
 
 <?php if ($role === 'admin') { ?>
     <div style="text-align: center; margin: 20px;">

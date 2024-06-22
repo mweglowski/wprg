@@ -1,10 +1,11 @@
 <?php
-session_start();
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbName = "project";
+$dbname = "project";
 
 $conn = new mysqli($servername, $username, $password);
 
@@ -12,14 +13,21 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$createDb = "CREATE DATABASE IF NOT EXISTS `$dbName`";
-
-$conn->select_db($dbName);
-
-$tables = ['order_products', 'orders', 'products', 'users'];
-foreach ($tables as $table) {
-    $conn->query("DROP TABLE IF EXISTS `$table`");
+$dropDb = "DROP DATABASE IF EXISTS `$dbname`";
+if ($conn->query($dropDb) === TRUE) {
+    echo "Database dropped successfully. ";
+} else {
+    echo "Error dropping database: " . $conn->error;
 }
+
+$createDb = "CREATE DATABASE IF NOT EXISTS `$dbname`";
+if ($conn->query($createDb) === TRUE) {
+    echo "Database created successfully. ";
+} else {
+    echo "Error creating database: " . $conn->error;
+}
+
+$conn->select_db($dbname);
 
 $createUsersTable = "CREATE TABLE IF NOT EXISTS `users` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,7 +38,11 @@ $createUsersTable = "CREATE TABLE IF NOT EXISTS `users` (
     `role` VARCHAR(50) NOT NULL,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
-$conn->query($createUsersTable);
+if ($conn->query($createUsersTable) === TRUE) {
+    echo "Users table created successfully. ";
+} else {
+    echo "Error creating users table: " . $conn->error;
+}
 
 $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,7 +54,11 @@ $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
     `quantity` INT NOT NULL,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
-$conn->query($createProductsTable);
+if ($conn->query($createProductsTable) === TRUE) {
+    echo "Products table created successfully. ";
+} else {
+    echo "Error creating products table: " . $conn->error;
+}
 
 $createOrdersTable = "CREATE TABLE IF NOT EXISTS `orders` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +66,11 @@ $createOrdersTable = "CREATE TABLE IF NOT EXISTS `orders` (
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 )";
-$conn->query($createOrdersTable);
+if ($conn->query($createOrdersTable) === TRUE) {
+    echo "Orders table created successfully. ";
+} else {
+    echo "Error creating orders table: " . $conn->error;
+}
 
 $createOrderProductsTable = "CREATE TABLE IF NOT EXISTS `order_products` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -60,7 +80,11 @@ $createOrderProductsTable = "CREATE TABLE IF NOT EXISTS `order_products` (
     FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`),
     FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
 )";
-$conn->query($createOrderProductsTable);
+if ($conn->query($createOrderProductsTable) === TRUE) {
+    echo "Order products table created successfully. ";
+} else {
+    echo "Error creating order products table: " . $conn->error;
+}
 
 $insertUsers = [
     [
@@ -88,7 +112,7 @@ $insertUserStmt->close();
 
 $products = [
     [
-        'image' => './images/rl_sutton.jpg',
+        'image' => '../images/rl_sutton.jpg',
         'title' => 'Reinforcement Learning: An Introduction',
         'authors' => 'Richard S. Sutton and Andrew G. Barto',
         'description' => 'The classic book on reinforcement learning.',
@@ -96,7 +120,7 @@ $products = [
         'quantity' => 10
     ],
     [
-        'image' => './images/dl_goodfellow.jpg',
+        'image' => '../images/dl_goodfellow.jpg',
         'title' => 'Deep Learning',
         'authors' => 'Ian Goodfellow, Yoshua Bengio, and Aaron Courville',
         'description' => 'A comprehensive introduction to the field of deep learning.',
@@ -104,7 +128,7 @@ $products = [
         'quantity' => 15
     ],
     [
-        'image' => './images/cs_interdisciplinary.jpg',
+        'image' => '../images/cs_interdisciplinary.jpg',
         'title' => 'Computer Science: An Interdisciplinary Approach',
         'authors' => 'Robert Sedgewick and Kevin Wayne',
         'description' => 'A broad introduction to computer science.',
@@ -112,7 +136,7 @@ $products = [
         'quantity' => 20
     ],
     [
-        'image' => './images/rl_szepesvari.jpg',
+        'image' => '../images/rl_szepesvari.jpg',
         'title' => 'Algorithms for Reinforcement Learning',
         'authors' => 'Csaba Szepesvári',
         'description' => 'A detailed guide on algorithms for reinforcement learning.',
@@ -120,7 +144,7 @@ $products = [
         'quantity' => 12
     ],
     [
-        'image' => './images/ml_geron.jpg',
+        'image' => '../images/ml_geron.jpg',
         'title' => 'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow',
         'authors' => 'Aurélien Géron',
         'description' => 'A practical guide to machine learning with popular Python libraries.',
@@ -136,27 +160,5 @@ foreach ($products as $product) {
 }
 $insertProductStmt->close();
 
-$showTables = "SHOW TABLES";
-$result = $conn->query($showTables);
-
-$fetchUsers = "SELECT * FROM `users`";
-$result = $conn->query($fetchUsers);
-
 $conn->close();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="index.css">
-</head>
-<body>
-<?php include "navbar.php"; ?>
-
-<img src="./images/sections/home.png" alt="Home Page Image" class="section-image"/>
-
-<h2 style="text-align: center; margin: 50px;">Welcome to our shop!</h2>
-
-</body>
-</html>

@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 
 $servername = "localhost";
@@ -54,13 +57,13 @@ if (!empty($productIds)) {
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/cart.css">
 </head>
 <body>
 <?php include "navbar.php"; ?>
 
-<img src="./images/sections/cart.png" alt="Cart Page Image" class="section-image"/>
+<img src="../images/sections/cart.png" alt="Cart Page Image" class="section-image"/>
 
 <div>
     <ul class="cart-product-list">

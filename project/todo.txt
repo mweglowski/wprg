@@ -1,3 +1,0 @@
-design - place some icons & images (ex. undraw.co), folder structure - clean
-
-turn off warnings

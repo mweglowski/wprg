@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 
 $servername = "localhost";
@@ -39,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = $_POST['price'];
     $image = $_FILES['image'];
 
-    $target_dir = "images/";
+    $target_dir = "../images/";
     $target_file = $target_dir . basename($image["name"]);
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $uploadOk = 1;
@@ -47,11 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check = getimagesize($image["tmp_name"]);
     if ($check === false) {
         $error = "File is not an image.";
-        $uploadOk = 0;
-    }
-
-    if ($image["size"] > 5000000) {
-        $error = "Sorry, your file is too large.";
         $uploadOk = 0;
     }
 
@@ -63,15 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($uploadOk == 0) {
         $error = "Sorry, your file was not uploaded.";
     } else {
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
         if (move_uploaded_file($image["tmp_name"], $target_file)) {
             $sql = "INSERT INTO products (title, authors, description, price, image) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("sssds", $title, $authors, $description, $price, $target_file);
 
-            if ($stmt->execute()) {
-                $success = "New product created successfully!";
-            } else {
+            if (!$stmt->execute()) {
                 $error = "Error creating product: " . $stmt->error;
+            } else {
+                header("Location: products.php");
             }
 
             $stmt->close();
@@ -89,28 +90,25 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Create New Product</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
 <?php include "navbar.php"; ?>
 
-<img src="./images/sections/create_product.png" alt="New Product Page Image" class="section-image"/>
+<img src="../images/sections/newProduct.png" alt="New Product Page Image" class="section-image"/>
+<h2 style="text-align: center; margin: 50px;">Create New Product</h2>
 
-<?php if (isset($success)) { ?>
-    <p style="color: green; text-align: center;"><?php echo $success; ?></p>
-<?php } ?>
 <?php if (isset($error)) { ?>
     <p style="color: red; text-align: center;"><?php echo $error; ?></p>
 <?php } ?>
 
-<!-- New Product Form -->
 <div style="text-align: center; margin: 20px;">
-    <form method="POST" action="products.php" enctype="multipart/form-data" class="login-form">
+    <form method="POST" action="" enctype="multipart/form-data" class="login-form">
         <input class="input" type="text" name="title" placeholder="Title" required />
         <input class="input" type="text" name="authors" placeholder="Authors" required />
         <textarea class="input" name="description" placeholder="Description" required></textarea>
         <input class="input" type="number" name="price" placeholder="Price" step="0.01" required />
-        <input class="input" type="file" name="image" placeholder="Image" required />
+        <input class="input" type="file" name="image" required />
         <button type="submit" class="button" style="margin: auto; margin-top: 20px;">Create Product</button>
     </form>
 </div>

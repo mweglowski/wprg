@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 
 $servername = "localhost";
@@ -52,7 +55,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Reset Password</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
 <?php
@@ -60,14 +63,14 @@ include "navbar.php";
 ?>
 
 <div class="section">
-
+    <img src="../images/sections/resetPassword.png" alt="Reset Password Page Image" class="section-image"/>
     <h2 style="text-align: center; margin: 50px;">Reset Password</h2>
 
     <form action="resetPassword.php" method="post" class="login-form">
         <input class="input" placeholder="New Password" type="password" name="new_password" required>
         <input class="input" placeholder="Confirm Password" type="password" name="confirm_password" required>
 
-        <button type="submit" class="button" style="margin: 1em auto;">Reset Password</button>
+        <button type="submit" class="button" style="margin: 1em auto;">Reset</button>
     </form>
 
     <?php

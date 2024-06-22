@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 
 $servername = "localhost";
@@ -68,14 +71,14 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Account</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/account.css">
 </head>
 <body>
 <?php include "navbar.php"; ?>
 
 <div class="section">
-    <img src="./images/sections/account.png" alt="Account Image" class="section-image"/>
+    <img src="../images/sections/account.png" alt="Account Image" class="section-image"/>
 
     <div style="border-bottom: 2px solid black; display: flex; justify-content: center; gap: 10px; max-width: 500px; margin: auto; width: 100%;">
         <a href="?section=accountDetails" class="account-button" style="font-size: 0.85em; text-decoration: none;">Account Details</a>

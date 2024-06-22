@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 
 if (isset($_POST['logout'])) {
@@ -23,15 +26,15 @@ if (isset($_POST['cancel'])) {
 <head>
     <meta charset="UTF-8">
     <title>Logout</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="logout.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/logout.css">
 </head>
 <body>
 <?php
 include "navbar.php";
 ?>
 
-<img src="./images/sections/logout.png" alt="Logout Page Image" class="section-image"/>
+<img src="../images/sections/logout.png" alt="Logout Page Image" class="section-image"/>
 <h2 style="text-align: center; margin: 50px;">Are you sure you want to log out?</h2>
 
 <form action="logout.php" method="post" style="text-align: center; margin: 50px;">

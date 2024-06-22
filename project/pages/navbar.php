@@ -1,9 +1,12 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+
 session_start();
 ?>
 
 <head>
-    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
 </head>
 
 <nav class="navbar">
