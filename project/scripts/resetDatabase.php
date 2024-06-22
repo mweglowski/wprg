@@ -20,11 +20,11 @@ if ($conn->query($dropDb) === TRUE) {
     echo "Error dropping database: " . $conn->error;
 }
 
-$createDb = "CREATE DATABASE IF NOT EXISTS `$dbname`";
+$createDb = "CREATE DATABASE `$dbname`";
 if ($conn->query($createDb) === TRUE) {
     echo "Database created successfully. ";
 } else {
-    echo "Error creating database: " . $conn->error;
+    die("Error creating database: " . $conn->error);
 }
 
 $conn->select_db($dbname);
@@ -41,7 +41,7 @@ $createUsersTable = "CREATE TABLE IF NOT EXISTS `users` (
 if ($conn->query($createUsersTable) === TRUE) {
     echo "Users table created successfully. ";
 } else {
-    echo "Error creating users table: " . $conn->error;
+    die("Error creating users table: " . $conn->error);
 }
 
 $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
@@ -57,7 +57,7 @@ $createProductsTable = "CREATE TABLE IF NOT EXISTS `products` (
 if ($conn->query($createProductsTable) === TRUE) {
     echo "Products table created successfully. ";
 } else {
-    echo "Error creating products table: " . $conn->error;
+    die("Error creating products table: " . $conn->error);
 }
 
 $createOrdersTable = "CREATE TABLE IF NOT EXISTS `orders` (
@@ -69,7 +69,7 @@ $createOrdersTable = "CREATE TABLE IF NOT EXISTS `orders` (
 if ($conn->query($createOrdersTable) === TRUE) {
     echo "Orders table created successfully. ";
 } else {
-    echo "Error creating orders table: " . $conn->error;
+    die("Error creating orders table: " . $conn->error);
 }
 
 $createOrderProductsTable = "CREATE TABLE IF NOT EXISTS `order_products` (
@@ -83,7 +83,7 @@ $createOrderProductsTable = "CREATE TABLE IF NOT EXISTS `order_products` (
 if ($conn->query($createOrderProductsTable) === TRUE) {
     echo "Order products table created successfully. ";
 } else {
-    echo "Error creating order products table: " . $conn->error;
+    die("Error creating order products table: " . $conn->error);
 }
 
 $insertUsers = [

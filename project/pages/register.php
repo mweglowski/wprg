@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 include "navbar.php";
 ?>
 <img src="../images/sections/login.png" alt="Register Page Image" class="section-image"/>
-<h2 style="text-align: center; margin: 50px;">REGISTER</h2>
+<h2 style="text-align: center; margin: 50px;">Register</h2>
 
 <form action="register.php" method="post" class="login-form">
     <input class="input" type="text" name="firstName" placeholder="First Name" required />

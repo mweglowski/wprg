@@ -25,18 +25,15 @@ if (isset($_POST['login'])) {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        // Bind result variables
         $stmt->bind_result($id, $hashedPassword);
         $stmt->fetch();
 
-        // Verify password
         if (password_verify($password, $hashedPassword)) {
-            // Password is correct, start a session
             $_SESSION['user_id'] = $id;
             $_SESSION['email'] = $email;
 
             echo "Session after login: ";
-            print_r($_SESSION); // Debugging: Print session after login
+            print_r($_SESSION);
 
             header("Location: products.php");
             exit();
@@ -65,7 +62,7 @@ $conn->close();
 include "navbar.php";
 ?>
 <img src="../images/sections/login.png" alt="Login Page Image" class="section-image"/>
-<h2 style="text-align: center; margin: 50px;">LOGIN</h2>
+<h2 style="text-align: center; margin: 50px;">Login</h2>
 
 <form action="login.php" method="post" class="login-form">
     <input class="input" type="text" name="email" placeholder="Email" required />
